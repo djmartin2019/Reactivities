@@ -29,9 +29,20 @@ namespace API
         {
             services.AddDbContext<DataContext>(opt =>
             {
+                //Connection String setup
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddCors(opt => //Adds Cross origin resource sharing 
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"); //Any request coming from our local host is allowed to be used. 
+                });
+            });
             services.AddControllers();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,7 +53,13 @@ namespace API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
+
+            app.UseCors("CorsPolicy");// Cors Policy
+                                      //    app.UseEndpoints(endpoints => 
+                                      //    {
+                                      //        endpoints.MapControllers();
+                                      //    });
 
             app.UseRouting();
 
