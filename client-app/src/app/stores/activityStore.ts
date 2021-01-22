@@ -29,7 +29,7 @@ class ActivityStore {
           ? [...activities[date], activity]
           : [activity];
         return activities;
-      }, {} as {[key: string]: IActivity[]})
+      }, {} as { [key: string]: IActivity[] })
     );
   }
 
@@ -44,7 +44,6 @@ class ActivityStore {
         });
         this.loadingInitial = false;
       });
-      console.log(this.groupActivitiesByDate(activities));
     } catch (error) {
       runInAction("load activities error", () => {
         this.loadingInitial = false;
@@ -61,10 +60,11 @@ class ActivityStore {
       try {
         activity = await agent.Activities.details(id);
         runInAction("getting activity", () => {
+          this.activity = activity;
           this.loadingInitial = false;
         });
       } catch (error) {
-        runInAction("get Activity error", () => {
+        runInAction("get activity error", () => {
           this.loadingInitial = false;
         });
         console.log(error);
