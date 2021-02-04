@@ -7,6 +7,7 @@ using Domain;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Persistence;
 
 namespace Application.User
 {
@@ -25,8 +26,8 @@ namespace Application.User
                 RuleFor(x => x.Email).NotEmpty();
                 RuleFor(x => x.Password).NotEmpty();
             }
-
         }
+
         public class Handler : IRequestHandler<Query, User>
         {
             private readonly UserManager<AppUser> _userManager;
@@ -37,7 +38,6 @@ namespace Application.User
                 _jwtGenerator = jwtGenerator;
                 _signInManager = signInManager;
                 _userManager = userManager;
-
             }
 
             public async Task<User> Handle(Query request, CancellationToken cancellationToken)
